@@ -13,7 +13,7 @@
 
 	<stript type= "text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></stript>
 
-	<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+
 // JQuery Reference, If you have added jQuery reference in your master page then ignore, 
 // else include this too with the below reference
 
@@ -30,44 +30,32 @@
 
 <body>
 
-<div class="pos-f-t">
-	<div class="collapse" id="navbarToggleExternalContent">
-		<div class="bg-inverse p-4">
-			<h1 class="text-white">TaskTastic</h1>
-			<span class="text-muted">
-				<div >
-
-				<a class="nav-item nav-link active" href="#">New Task </a>
-				<span class="sr-only">(current)</span></a>
-				<a class="nav-item nav-link" href="#">Delete Task</a>
-				<a class="nav-item nav-link" href="#">Profile</a>
-				<a class="nav-item nav-link" href="http://127.0.0.1:5000/logout">Sign Out</a>
-			</div>
-			</span>
-		</div>
-	</div>
-	<nav class="navbar navbar-inverse bg-inverse">
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-	</nav>
- </div>
- <div>
+<nav class="navbar navbar-expand-lg navbar navbar-inverse">
+ <h1 class="display-3"><font color="white">TaskTastic DashBoard</font></h1>
+  
+    <span class="navbar-toggler-icon"></span>
+  
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+      <a class="nav-item nav-link active" href="http://127.0.0.1:5000">Home <span class="sr-only">(current)</span></a>
+      <a class="nav-item nav-link" href="#">Profile</a>
+      <a class="nav-item nav-link" href="http://127.0.0.1:5000/logout">Log Out</a>
+    </div>
+  </div>
+</nav>
 
 
 	<form action="/log/{{current_user.id}}" method="post">
-						<input type="text" name="description" />
-						<input type="text" name="category" />
-						<input type="text" name="due" />
-						<input type="text" name="notes" />
-						<input type="text" name="remind" />
-						<input type="text" name="priority" />
+
+						<input type="text" name="description" placeholder="Description" />
+						<input type="text" name="category" placeholder="Category" />
+						<input type="text" name="due" placeholder="Due Date" />
+						<input type="text" name="notes" placeholder="Notes" />
+						<input type="text" name="priority" placeholder="Priority" />
+						<input type="checkbox" name="vehicle" value="Bike"/> Remind with Email 
 						<input class="btn btn-primary" type="submit" value="submit">
-		</form>
-		<form action="/load" method="post">
-					 
-				<input class="btn btn-primary" type="submit" value="Load Tasks">
-		</form>
+	</form>
+		
 		<div>
 
 		
@@ -82,21 +70,26 @@
 								<th>Notes</th>
 								<th>Email reminder</th>
 								<th>Priority</th>
+								<th>Sub-Tasks</th>
 								<th>Delete</th>
+								<th>Edit</th>
 						</tr>
 				</thead>
 				<tbody>
 						{% for task in tasklist %}
 						<tr>
 							
-							<td id="{{ task.id }}">{{ task.description}} {{ current_user.email }}</td>
+							<td id="{{ task.id }}">{{ task.description}} </td>
 							<td id="{{ task.id }}">{{ task.category }}</td>
 							<td id="{{ task.id }}">{{ task.due }}</td>
 							<td id="{{ task.id }}">{{ task.notes }}</td>
 							<td id="{{ task.id }}">{{ task.remind}}</td>
 							<td id="{{ task.id }}">{{ task.priority}}</td>
 
+							<td id="{{ task.id }}"><a class="btn" href="/api/subs/{{ task.id }}">Subtasks</td>
+
 							<td id="{{ task.id }}"><a class="btn btn-danger" href="/api/delete/{{ task.id }}">Delete</td>
+							<td id="{{ task.id }}"><a class="btn btn-danger" href="/api/edit/{{ task.id }}">Edit</td>
 							
 						</tr>
 						{% endfor %}

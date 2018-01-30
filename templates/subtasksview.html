@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Tasktatsic Edit</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+        <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+// JQuery Reference, If you have added jQuery reference in your master page then ignore, 
+// else include this too with the below reference
+
+<script src="https://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css">
+
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $('#example').DataTable();
+    });
+    </script>
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar navbar-inverse">
+ <h1 class="display-3"><font color="white">TaskTastic</font></h1> 
+    <span class="navbar-toggler-icon"></span>
+  <h3><font color="#cccccc;">Subtasks</font></h3
+  
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+      <a class="nav-item nav-link active" href="http://127.0.0.1:5000">Home <span class="sr-only">(current)</span></a>
+      <a class="nav-item nav-link" href="#">Profile</a>
+      <a class="nav-item nav-link" href="http://127.0.0.1:5000/logout">Log Out</a>
+    </div>
+  </div>
+</nav>
+
+	<table id="example">
+                <thead>
+                        <tr>
+                                
+                                <th>Description</th>
+                                <th>Category</th>
+                                <th>Due Date</th>
+                                <th>Notes</th>
+                                <th>Email reminder</th>
+                                <th>Priority</th>
+                                
+                        </tr>
+                </thead>
+                <tbody>
+                        {% for sub in subtask%}
+                        <tr>
+                            
+                            <td id="{{ sub.id }}">{{ sub.description}} </td>
+                            <td id="{{ sub.id }}">{{ sub.category }}</td>
+                            <td id="{{ sub.id }}">{{ sub.due }}</td>
+                            <td id="{{ sub.id }}">{{ sub.notes }}</td>
+                            <td id="{{ sub.id }}">{{ sub.remind}}</td>
+                            <td id="{{ sub.id }}">{{ sub.priority}}</td>
+
+                            
+                        </tr>
+                        {% endfor %}
+                </tbody>
+        </table>
+
+        <a class="btn btn-danger" href="/">Home
+
+</body>
+</html>

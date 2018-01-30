@@ -6,6 +6,9 @@ from flask.ext.security.utils import encrypt_password
 from flask.ext.security.registerable import register_user
 from datetime import datetime
 from flask_table import Table, Col
+from flask_wtf import FlaskForm
+from wtforms import StringField, DateField, BooleanField, PasswordField,SubmitField,SelectField
+from flask_login import current_user
 
 app = Flask(__name__)
 
@@ -23,6 +26,15 @@ roles_users = db.Table('roles_users',
         db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
         db.Column('role_id', db.Integer(), db.ForeignKey('role.id')))
 
+class EditForm(FlaskForm):
+    description = StringField('Description')
+    category = StringField('Category')
+    notes = StringField('Notes')
+    priority = StringField('Priority')
+    subtask = StringField('Subtask')
+    #subtask = BooleanField('Subtask')
+    submit = SubmitField('Update')
+	
 
 class Role(db.Model, RoleMixin):
     id = db.Column(db.Integer(), primary_key=True)
@@ -51,9 +63,6 @@ class Tasks (db.Model):
 	user_id=db.Column(db.Integer,db.ForeignKey('user.id'),nullable=False)
 	subtask=db.relationship('SubTasks',backref='tasks',lazy=True)
 
-# def __init__(self,description):
-# 	self.description=description
-
 class SubTasks(db.Model):
 	
 	id = db.Column(db.Integer, primary_key=True)
@@ -80,23 +89,19 @@ def create_user():
 @app.route("/")
 @login_required
 def index():
-   return render_template('index.html')
-
-@app.route('/load', methods=["GET", "POST"])
-def load():
-	tasklist=Tasks.query.all()
+	tasklist=Tasks.query.filter_by(user_id=current_user.id)
 	return render_template('index.html',tasklist=tasklist)
 
 
 @app.route('/log/<uid>', methods=["GET", "POST"])
 def log(uid):
 	    
-	tasks=Tasks(description=request.form['description'],user_id=uid)
+	tasks=Tasks(description=request.form['description'],category=request.form['category'], due=request.form['due'], notes=request.form['notes'],
+		priority=request.form['priority'],user_id=uid)
 	db.session.add(tasks)
 	db.session.commit()
-	load()
-
-	return render_template('index.html')
+	tasklist=Tasks.query.filter_by(user_id=current_user.id)
+	return render_template('index.html',tasklist=tasklist)
 
 
 @app.route('/api/delete/<keys>')
@@ -107,7 +112,47 @@ def delete(keys):
 	tasklist=Tasks.query.all()
 	return render_template('index.html',tasklist=tasklist)
 
+@app.route('/api/edit/<keys>')
+def edit(keys):
+	form = EditForm()
+	return render_template('editpage.html', form=form,taskid=keys)
+
+@app.route('/api/update/edit/<keys>/update',methods=["GET", "POST"])
+def Update(keys):
+	if request.form['subtask']=='Subtask':
+		subtask=SubTasks(description=request.form['description'],tasks_id=keys)
+		db.session.add(subtask)
+		db.session.commit()
+		return render_template('index.html')
+
+	else:
+		if request.form['description']!='':
+			task=Tasks.query.filter_by(id=keys).first()
+			task.description=request.form['description']
+			db.session.commit()
+		if request.form['category']!='':
+			task=Tasks.query.filter_by(id=keys).first()
+			task.category=request.form['category']
+			db.session.commit()
+		if request.form['notes']!='':
+			task=Tasks.query.filter_by(id=keys).first()
+			task.notes=request.form['notes']
+			db.session.commit()
+		if request.form['priority']!='':
+			task=Tasks.query.filter_by(id=keys).first()
+			task.priority=request.form['priority']
+			db.session.commit()
+
+		return render_template('index.html')
+
+@app.route('/api/subs/<keys>')
+def subs(keys):
+	subtask=SubTasks.query.filter_by(tasks_id=keys)
+	return render_template('subtasksview.html', subtask=subtask)
+
+
+	
+
 if __name__ == '__main__':
    app.run(debug = True)
 
-##localhost:9283/api/delete/hello

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Tasktatsic Edit</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar navbar-inverse">
+ <h1 class="display-3"><font color="white">TaskTastic</font></h1> 
+    <span class="navbar-toggler-icon"></span>
+  <h3><font color="#cccccc;">Update Tasks</font></h3
+  
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+      <a class="nav-item nav-link active" href="http://127.0.0.1:5000">Home <span class="sr-only">(current)</span></a>
+      <a class="nav-item nav-link" href="#">Profile</a>
+      <a class="nav-item nav-link" href="http://127.0.0.1:5000/logout">Log Out</a>
+    </div>
+  </div>
+</nav>
+<div class="col-sm-offset-4 col-sm-7">
+	<h1> Enter changes to task</h1>
+
+<form action="/api/update/edit/{{taskid}}/update" method="post">
+        {{ form.hidden_tag() }}
+        <h4>Task I.d.:</h4>{{taskid}}
+        <p>
+            {{ form.description.label }}<br>
+            {{ form.description(size=32) }}
+        </p>
+        <p>
+            {{ form.category.label }}<br>
+            {{ form.category(size=32) }}
+        </p>
+          <p>
+            {{ form.notes.label }}<br>
+            {{ form.notes(size=32) }}
+        </p>
+          <p>
+            {{ form.priority.label }}<br>
+            {{ form.priority(size=32) }}
+        </p>
+        <p>{{ form.subtask() }} {{ form.subtask.label }}</p>
+        <p>{{ form.submit() }}</p>
+
+    </form>
+  </div>
+</body>
+</html>
