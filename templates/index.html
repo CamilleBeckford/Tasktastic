@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Tasktatsic Dashboard</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+	<link rel= "stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css"/>
+
+	<stript type= "text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></stript>
+
+	<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+// JQuery Reference, If you have added jQuery reference in your master page then ignore, 
+// else include this too with the below reference
+
+<script src="https://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css">
+
+	<script type="text/javascript">
+	$(document).ready(function(){
+		$('#example').DataTable();
+	});
+	</script>
+
+</head>
+
+<body>
+
+<div class="pos-f-t">
+	<div class="collapse" id="navbarToggleExternalContent">
+		<div class="bg-inverse p-4">
+			<h1 class="text-white">TaskTastic</h1>
+			<span class="text-muted">
+				<div >
+
+				<a class="nav-item nav-link active" href="#">New Task </a>
+				<span class="sr-only">(current)</span></a>
+				<a class="nav-item nav-link" href="#">Delete Task</a>
+				<a class="nav-item nav-link" href="#">Profile</a>
+				<a class="nav-item nav-link" href="http://127.0.0.1:5000/logout">Sign Out</a>
+			</div>
+			</span>
+		</div>
+	</div>
+	<nav class="navbar navbar-inverse bg-inverse">
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+	</nav>
+ </div>
+ <div>
+
+
+	<form action="/log/{{current_user.id}}" method="post">
+						<input type="text" name="description" />
+						<input type="text" name="category" />
+						<input type="text" name="due" />
+						<input type="text" name="notes" />
+						<input type="text" name="remind" />
+						<input type="text" name="priority" />
+						<input class="btn btn-primary" type="submit" value="submit">
+		</form>
+		<form action="/load" method="post">
+					 
+				<input class="btn btn-primary" type="submit" value="Load Tasks">
+		</form>
+		<div>
+
+		
+
+			<table id="example">
+				<thead>
+						<tr>
+								
+								<th>Description</th>
+								<th>Category</th>
+								<th>Due Date</th>
+								<th>Notes</th>
+								<th>Email reminder</th>
+								<th>Priority</th>
+								<th>Delete</th>
+						</tr>
+				</thead>
+				<tbody>
+						{% for task in tasklist %}
+						<tr>
+							
+							<td id="{{ task.id }}">{{ task.description}} {{ current_user.email }}</td>
+							<td id="{{ task.id }}">{{ task.category }}</td>
+							<td id="{{ task.id }}">{{ task.due }}</td>
+							<td id="{{ task.id }}">{{ task.notes }}</td>
+							<td id="{{ task.id }}">{{ task.remind}}</td>
+							<td id="{{ task.id }}">{{ task.priority}}</td>
+
+							<td id="{{ task.id }}"><a class="btn btn-danger" href="/api/delete/{{ task.id }}">Delete</td>
+							
+						</tr>
+						{% endfor %}
+				</tbody>
+		</table>
+
+		</div>
+
+
+
+ </div>
+
+ 
+</body>
+</html>
